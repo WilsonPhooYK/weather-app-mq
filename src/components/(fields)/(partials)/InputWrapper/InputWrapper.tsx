@@ -10,6 +10,14 @@ type InputWrapper = {
   disabled?: boolean;
 };
 
+/**
+ * A wrapper component for form input elements, providing styling for active and error states.
+ * It also supports custom classes and an optional reference for the wrapper div.
+ * @component
+ *
+ * @param {InputWrapper} props - The props for the InputWrapper component.
+ * @returns {JSX.Element} The rendered input wrapper with appropriate styling.
+ */
 export default memo(function InputWrapper({
   refObj,
   children,

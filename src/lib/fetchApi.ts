@@ -15,7 +15,14 @@ export interface ErrorData {
   error_description?: string;
 }
 
-// Unifies all API errors into a standard type for FE to use
+
+/**
+ * Creates a standardized error data object.
+ * @param {boolean} [isAborted=false] - Indicates if the request was aborted.
+ * @param {string} [error] - The error message (optional).
+ * @param {string} [errorDescription] - The error description (optional).
+ * @returns {ApiErrorData<ErrorData>} The error data object.
+ */
 export function getErrorData(isAborted?: boolean, error?: string, errorDescription?: string): ApiErrorData<ErrorData> {
   return {
     is_aborted: isAborted,
@@ -25,6 +32,12 @@ export function getErrorData(isAborted?: boolean, error?: string, errorDescripti
     }
   };
 }
+
+/**
+ * Type guard to check if a given error is of type ApiErrorData.
+ * @param {unknown} error - The error to check.
+ * @returns {boolean} True if the error is an ApiErrorData object, false otherwise.
+ */
 export function isApiErrorData(error: unknown): error is ApiErrorData<unknown> {
   return typeof error === 'object' && error !== null && 'is_aborted' in error;
 }
@@ -32,8 +45,21 @@ export function isApiErrorData(error: unknown): error is ApiErrorData<unknown> {
 ///////////////////////////////////////
 // Fetch Api
 ///////////////////////////////////////
-export type Response<Result, ErrorResponse> = [ApiErrorData<ErrorResponse> | undefined, Result | undefined];
+export type Response<Result, ErrorResponse> = [ApiErrorData<ErrorResponse>, undefined] | [undefined, Result];
 
+
+/**
+ * A general-purpose API function that makes requests to an external API.
+ * @template Result - The type of the successful response data.
+ * @template ErrorResponse - The type of error response data (optional, defaults to ErrorData).
+ * @template Params - The type of the parameters to be sent with the request (optional).
+ * @param {'GET'|'POST'|'PUT'|'PATCH'|'DELETE'} type - The HTTP method to use for the request.
+ * @param {string} url - The URL to which the request is sent.
+ * @param {Params} [params] - The parameters for the request body (optional).
+ * @param {HeadersInit} [headers] - Additional headers to be included with the request (optional).
+ * @param {AbortController} [controller] - The controller used to abort the request (optional).
+ * @returns {Promise<Response<Result, ErrorResponse>>} A promise resolving to the API response, including any error.
+ */
 async function API<Result, ErrorResponse = ErrorData, Params = undefined>(
   type: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
   url: string,
@@ -66,7 +92,7 @@ async function API<Result, ErrorResponse = ErrorData, Params = undefined>(
         ? ((await result.text()) as Result)
         : undefined;
 
-    if (result.ok) {
+    if (result.ok && returnData) {
       return [
         // No error
         undefined,
@@ -103,6 +129,15 @@ async function API<Result, ErrorResponse = ErrorData, Params = undefined>(
   }
 }
 
+/**
+ * Convenience method to handle GET requests.
+ * @template Result - The type of the successful response data.
+ * @template ErrorResponse - The type of error response data (optional, defaults to ErrorData).
+ * @param {string} url - The URL to which the request is sent.
+ * @param {HeadersInit} [headers] - Additional headers to be included with the request (optional).
+ * @param {AbortController} [controller] - The controller used to abort the request (optional).
+ * @returns {Promise<Response<Result, ErrorResponse>>} A promise resolving to the API response, including any error.
+ */
 export async function GET<Result, ErrorResponse = ErrorData>(
   url: string,
   headers?: HeadersInit,

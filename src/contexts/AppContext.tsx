@@ -16,6 +16,18 @@ export const AppContext = createContext<AppContext>({
   toggleLoadingScreen: () => {},
 });
 
+/**
+ * Context provider component for managing app-wide settings, such as theme and loading screen visibility.
+ *
+ * This component:
+ * - Manages the app theme (light/dark) and provides a way to toggle between them.
+ * - Provides a loading screen handler that allows other components to trigger a loading screen.
+ *
+ * @component
+ * 
+ * @param {ReactNode} props.children - The child components to render inside the provider.
+ * @returns {JSX.Element} The rendered AppContextProvider component.
+ */
 export default function AppContextProvider({
   children,
 }: {
@@ -24,11 +36,13 @@ export default function AppContextProvider({
   const loadingScreenRef = useRef<LoadingScreenHandle>(null);
   // Controls light or dark mode
   const [appTheme, setAppTheme] = useState<AppContext["theme"]>(() => {
+    // Attempt to get from localstorage
     const localStorageTheme = localStorage?.getItem(WEATHER_APP_THEME_LOCALSTORAGE);
     if (localStorageTheme === 'light' || localStorageTheme === 'dark') {
       return localStorageTheme;
     }
 
+    // If not, use system preference or default to light
     const systemTheme = typeof window !== "undefined" &&
     window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"

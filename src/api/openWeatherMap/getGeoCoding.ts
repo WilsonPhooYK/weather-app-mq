@@ -11,6 +11,15 @@ type GeoCodingApiData = {
 // We will only take the first item and prune all unnecessary attributes
 export type GeoCodingData = GeoCodingApiData[number] | null;
 
+
+/**
+ * Function to fetch Geo Coding data pased on (city), or (city,country) query
+ * 
+ * @param query - (city), or (city,country) query.
+ * @param controller - AbortController
+ * 
+ * @returns Returns GeoCodingData or OpenWeatherMap error
+ */
 export async function getGeoCoding(
   query: string,
   controller?: AbortController,

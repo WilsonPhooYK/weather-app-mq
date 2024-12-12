@@ -10,7 +10,19 @@ const QUERY_NOT_FOUND_STR = "Oops, nothing found.";
 const QUERY_EMPTY_STR = "Try london (city) or london,gb (city,country code).";
 
 /**
- * Custom hook to handle weather search functionality.
+ * Custom hook to manage weather search functionality.
+ *
+ * This hook handles:
+ * - Validating and processing weather search queries.
+ * - Fetching geographical coordinates (latitude and longitude) from the query.
+ * - Fetching weather information based on the coordinates.
+ * - Managing error states, loading states, and aborting requests.
+ *
+ * @param setErrorMessage - Function to set error messages for invalid input or API errors.
+ * @returns An object containing:
+ * - `getWeatherInfo`: Function to fetch weather information for a given query.
+ * - `searchDisabled`: State indicating whether the search is disabled (e.g., during a request).
+ * - `onSubmitRetrieveWeatherInfo`: Function to trigger the entire weather search workflow.
  */
 function useWeatherSearch(setErrorMessage: React.Dispatch<React.SetStateAction<string>>) {
   const { setCurrentWeatherData } = useContext(WeatherContext);
@@ -18,16 +30,27 @@ function useWeatherSearch(setErrorMessage: React.Dispatch<React.SetStateAction<s
   const [searchDisabled, setSearchDisabled] = useState(false);
   const controller = useRef<AbortController>();
 
-  // We need to call getGeoCoding first before using the lat and lon to
-  // call getCurrentWeather. This is because Built-in geocoding for the 
-  // weather API is depreceated
+
+  /**
+   * Fetches weather information based on the provided query.
+   * This involves two API calls because built-in geocoding for the weather API is depreceated:
+   * 1. `getGeoCoding` to retrieve latitude and longitude based on the query.
+   * 2. `getCurrentWeather` to fetch weather details using the retrieved coordinates.
+   *
+   * @param query - The city or city-country combination to search for (e.g., "london" or "london,gb").
+   * @param errorMessage - Optional error message for invalid input (if present, the function exits early).
+   */
   const getWeatherInfo = useCallback(async (query: string, errorMessage?: string) => {
     try {
       // Input error or empty query, return
       if (errorMessage) {
         return;
       }
+      
+      // Trim ends
+      query = query?.trim();
 
+      // Attempt to submit empty query, prompt user the input format
       if (!query) {
         setErrorMessage(QUERY_EMPTY_STR);
         return;
@@ -99,7 +122,14 @@ function useWeatherSearch(setErrorMessage: React.Dispatch<React.SetStateAction<s
     }
   }, [setErrorMessage, setCurrentWeatherData]);
 
-  // Retrieve data
+
+   /**
+   * Handles the submission of a weather search query.
+   * This triggers the entire workflow, including toggling loading states and disabling the search.
+   *
+   * @param query - The city or city-country combination to search for.
+   * @param errorMessage - Optional error message for invalid input.
+   */
   const onSubmitRetrieveWeatherInfo = useCallback(async (query: string, errorMessage?: string) => {
     setSearchDisabled(true);
     toggleLoadingScreen(true);
@@ -110,7 +140,8 @@ function useWeatherSearch(setErrorMessage: React.Dispatch<React.SetStateAction<s
     setSearchDisabled(false);
   }, [getWeatherInfo, toggleLoadingScreen]);
 
-  // Clean up any active AbortControllers
+
+  // Cleanup logic to abort ongoing requests and reset the loading state when the component unmounts.
   useEffect(() => {
     return () => { 
       toggleLoadingScreen(false)

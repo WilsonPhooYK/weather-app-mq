@@ -1,7 +1,10 @@
 'use client';
-import { useState, memo, forwardRef, useImperativeHandle } from 'react';
+import { useState, memo, forwardRef, useImperativeHandle, lazy, Suspense } from 'react';
 import FieldWrapper from '../(partials)/FieldWrapper';
 import InputWrapper from '../(partials)/InputWrapper';
+import { Adornment as AdornmentType } from '../(partials)/Adornment/Adornment';
+
+const Adornment = lazy(() => import('../(partials)/Adornment'));
 
 export type Input = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'type'> &
   {
@@ -9,6 +12,8 @@ export type Input = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'
     label: string;
     error?: string;
     useExternalLabel?: boolean;
+    adornmentOnClick?: AdornmentType['onClick'];
+    adornmentType?: AdornmentType['type'];
     onChange?: (value: string | undefined, name?: string) => void;
     value?: string | undefined;
   };
@@ -17,6 +22,15 @@ export type InputHandle = {
   setValue: (value: string) => void;
 };
 
+/**
+ * A controlled input component that supports adornments, external labels, and error handling.
+ * It also supports a reference to programmatically control the value.
+ * @component
+ *
+ * @param {Input} props - The props for the Input component.
+ * @param {Ref} ref - The forwarded ref to handle the input value programmatically.
+ * @returns {JSX.Element} The rendered Input component.
+ */
 export default memo(
   forwardRef(function Input(
     {
@@ -31,6 +45,8 @@ export default memo(
       label,
       value:storeValue,
       autoComplete = 'off',
+      adornmentOnClick,
+      adornmentType,
       ...props
     }: Input,
     ref,
@@ -77,6 +93,18 @@ export default memo(
             aria-required={required}
             aria-disabled={disabled}
           />
+          {
+            adornmentOnClick && adornmentType && (
+              <Suspense fallback={null}>
+                <Adornment
+                  type={adornmentType}
+                  onClick={adornmentOnClick}
+                  disabled={disabled}
+                  parentId={name}
+                />
+              </Suspense>
+            )
+          }
         </InputWrapper>
       </FieldWrapper>
     );

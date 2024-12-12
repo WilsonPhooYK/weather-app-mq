@@ -29,6 +29,15 @@ export type CurrentWeatherData = Omit<CurrentWeatherApiData, "weather"> & {
   local_dt?: number;
 };
 
+/**
+ * Function to fetch current weather data based on longitude and latitude
+ * 
+ * @param lon - Longitude.
+ * @param lat - Latitude.
+ * @param controller - AbortController
+ * 
+ * @returns Returns CurrentWeatherData or OpenWeatherMap error
+ */
 export async function getCurrentWeather(
   lon: number,
   lat: number,

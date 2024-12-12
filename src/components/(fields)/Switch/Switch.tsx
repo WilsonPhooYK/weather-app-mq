@@ -16,6 +16,16 @@ export type SwitchHandle = {
   setValue: (value: string) => void;
 };
 
+/**
+ * Switch component that renders a styled checkbox with a label.
+ * It supports both internal state and external control via the `onChange` and `value` props.
+ * The switch can be disabled and has custom styling based on the checked state.
+ *
+ * @component
+ *
+ * @param {Input} props - The props for the Switch component.
+ * @returns {JSX.Element} The rendered switch component.
+ */
 export default memo(
   forwardRef(function Switch(
     {

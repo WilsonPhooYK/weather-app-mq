@@ -21,6 +21,14 @@ type WeatherSearchHistoryList = {
   >;
 };
 
+/**
+ * This component renders a list of previously searched weather data.
+ * - For each item in the history:
+ *   - Displays the name, country, temperature, and the formatted date of the search.
+ *   - Includes buttons to:
+ *     - Select a search item, which will populate the selected weather data for further use.
+ *     - Delete a search item from the list and local storage.
+ */
 export default memo(function WeatherSearchHistoryList({
   weatherHistory,
   deleteItemFromWeatherHistory,

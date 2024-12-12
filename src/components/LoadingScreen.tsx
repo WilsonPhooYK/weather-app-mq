@@ -5,6 +5,20 @@ export type LoadingScreenHandle = {
   setIsLoading: (isLoading: boolean) => void;
 };
 
+/**
+ * A loading screen component that can be controlled externally via a ref.
+ * This component displays a spinner when the `isLoading` state is true.
+ *
+ * @component
+ * @example
+ * const loadingScreenRef = useRef<LoadingScreenHandle>(null);
+ * 
+ * // Trigger loading state change
+ * loadingScreenRef.current?.setIsLoading(true);
+ * 
+ * @param {React.Ref<LoadingScreenHandle>} ref - A ref to interact with the loading screen externally.
+ * @returns {JSX.Element | null} The loading screen component (or null if not loading).
+ */
 export default memo(forwardRef(function LoadingScreen(_, ref) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useImperativeHandle<unknown, LoadingScreenHandle>(

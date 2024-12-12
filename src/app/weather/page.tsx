@@ -5,6 +5,10 @@ import WeatherSearchHistory from "./(components)/WeatherSearchHistory";
 import { cn } from "@/lib/utils";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 
+/**
+ * The Weather component serves as the main container for the weather app
+ * and all its components.
+ */
 export default function Weather() {
   return (
     <WeatherContextProvider>

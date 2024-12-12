@@ -4,6 +4,16 @@ import { cn } from "@/lib/utils";
 import { memo, useContext } from "react";
 import WeatherInfoCurrentEmpty from "./WeatherInfoCurrentEmpty";
 
+/**
+ * Displays the current weather data if available, otherwise shows an empty state.
+ * This component fetches weather details from the WeatherContext and renders:
+ * - Temperature (current, max, and min)
+ * - Weather description
+ * - Humidity
+ * - Location (city and country)
+ * - Date and time in local format
+ * If no weather data is available, it falls back to showing the WeatherInfoCurrentEmpty component.
+ */
 export default memo(function WeatherInfoCurrent() {
   const { currentWeatherData } = useContext(WeatherContext);
 

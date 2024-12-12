@@ -16,6 +16,16 @@ export const WeatherContext = createContext<WeatherContext>({
   setHistorySearchWeatherData: () => {},
 });
 
+/**
+ * Context provider component for managing weather data and search history.
+ *
+ * This component provides the current weather data and search history data across the application.
+ *
+ * @component
+ *
+ * @param {ReactNode} props.children - The child components to render inside the provider.
+ * @returns {JSX.Element} The rendered WeatherContextProvider component.
+ */
 export default function WeatherContextProvider({
   children,
 }: {

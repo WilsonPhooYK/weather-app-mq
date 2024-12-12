@@ -5,12 +5,27 @@ const QUERY_ERROR_STR =
   "Please try in the format london (city) or london,gb (city,country code)";
 
 /**
- * Custom hook to handle weather search input.
+ * Custom hook to manage and validate weather search input.
+ *
+ * This hook provides state and handlers for managing user input 
+ * in a weather search field. It ensures input conforms to the required
+ * format and provides error handling for invalid input.
+ *
+ * @param setErrorMessage - Function to set error messages for invalid input.
+ * @returns An object containing:
+ * - `query`: The current value of the input field.
+ * - `validateAndSetInput`: Function to validate and set input.
+ * - `clearInput`: Function to clear the input field.
  */
 function useWeatherInput(setErrorMessage: React.Dispatch<React.SetStateAction<string>>) {
   const [query, setQuery] = useState('');
 
-  // Validate query input
+  /**
+   * Validates the user input and updates the query state.
+   *
+   * @param value - The input string to validate.
+   * @returns `true` if the input is valid, `false` otherwise.
+   */
   const validateAndSetInput = useCallback((value?: string) => {
     setQuery(value || '');
 
@@ -30,9 +45,17 @@ function useWeatherInput(setErrorMessage: React.Dispatch<React.SetStateAction<st
     return true;
   }, [setErrorMessage]);
 
+  /**
+   * Clears the query input and resets validation state.
+   */
+  const clearInput = useCallback(() => {
+    validateAndSetInput('');
+  }, [validateAndSetInput]);
+
   return {
     query,
     validateAndSetInput,
+    clearInput,
   }
 }
 

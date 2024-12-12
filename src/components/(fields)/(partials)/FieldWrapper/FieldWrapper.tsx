@@ -11,6 +11,14 @@ export type FieldWrapper = {
   children: ReactNode;
 };
 
+/**
+ * A wrapper component for form fields, which includes the label, error message, and optional tooltip.
+ * @component
+ *
+ * @param {FieldWrapper} props - The props for the FieldWrapper component.
+ * @param {ReactNode} props.children - The form field element (e.g., input, textarea) inside the wrapper.
+ * @returns {JSX.Element} The rendered field wrapper with the label and error message.
+ */
 export default forwardRef<HTMLDivElement, FieldWrapper>(function FieldWrapper(
   { name, label, useExternalLabel, error = '', className, children, ...props },
   ref
@@ -46,7 +54,7 @@ export default forwardRef<HTMLDivElement, FieldWrapper>(function FieldWrapper(
       >
         {label}
       </label>
-      <p id={`${name}-error-helper-text`} className="order-3 text-sm text-red-800 dark:text-red-400 min-h-[var(--input-error-text-height)] pl-1 translate-y-1">
+      <p id={`${name}-error-helper-text`} className="order-3 text-sm text-red-800 dark:text-red-400 min-h-[var(--input-error-text-height)] pl-1 translate-y-1 first-letter:capitalize">
         {error}
       </p>
     </div>
