@@ -32,15 +32,15 @@ export function isApiErrorData(error: unknown): error is ApiErrorData<unknown> {
 ///////////////////////////////////////
 // Fetch Api
 ///////////////////////////////////////
-export type Response<Result, ErrorData> = [ApiErrorData<ErrorData> | undefined, Result | undefined];
+export type Response<Result, ErrorResponse> = [ApiErrorData<ErrorResponse> | undefined, Result | undefined];
 
-async function API<Result, ErrorData, Params = undefined>(
+async function API<Result, ErrorResponse = ErrorData, Params = undefined>(
   type: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
   url: string,
   params?: Params,
   headers?: HeadersInit,
   controller?: AbortController
-): Promise<Response<Result, ErrorData>> {
+): Promise<Response<Result, ErrorResponse>> {
   try {
     const result = await fetch(url, {
       method: type,
@@ -82,7 +82,7 @@ async function API<Result, ErrorData, Params = undefined>(
       return [
         {
           is_aborted: true,
-        } as ApiErrorData<ErrorData>,
+        } as ApiErrorData<ErrorResponse>,
         undefined,
       ]
     }
@@ -97,16 +97,16 @@ async function API<Result, ErrorData, Params = undefined>(
         is_aborted: false,
         // No use taking the error HTML, return undefined to display generic error
         error_data: isInternalServerError ? undefined : error,
-      } as ApiErrorData<ErrorData>,
+      } as ApiErrorData<ErrorResponse>,
       undefined,
     ]
   }
 }
 
-export async function GET<Result, ErrorData>(
+export async function GET<Result, ErrorResponse = ErrorData>(
   url: string,
   headers?: HeadersInit,
   controller?: AbortController
-): Promise<Response<Result, ErrorData>> {
-  return API<Result, ErrorData>('GET', url, undefined, headers, controller);
+): Promise<Response<Result, ErrorResponse>> {
+  return API<Result, ErrorResponse>('GET', url, undefined, headers, controller);
 }

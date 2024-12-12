@@ -6,7 +6,7 @@ import AppContextProvider from './context/AppContext';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AppContextProvider mode="light" >
+    <AppContextProvider>
       <Weather />
     </AppContextProvider>
   </StrictMode>,

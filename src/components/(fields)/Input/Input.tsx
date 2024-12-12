@@ -59,6 +59,7 @@ export default memo(
           <input
             {...props}
             type="text"
+            id={name}
             name={name}
             placeholder={placeholder}
             value={valueToUse || ''}

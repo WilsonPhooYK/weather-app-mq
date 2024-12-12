@@ -24,24 +24,21 @@ export default memo(function WeatherSearch() {
   return (
     <section className="relative z-10">
       <form
-        className="flex gap-5 w-full"
+        // The min height here is to cater for error message to prevent jumping
+        className="flex gap-3 sm:gap-5 w-full max-[369px]:min-h-32 max-sm:min-h-24"
         noValidate
         onSubmit={async (e?: React.FormEvent<HTMLFormElement>) => {
           e?.preventDefault();
-
-          // Input error or empty query, return
-          if (errorMessage || !query) {
-            return;
-          }
-
-          await onSubmitRetrieveWeatherInfo(query);
+          // Close the keyboard by blurring the active element
+          (document.activeElement as HTMLElement)?.blur();
+          await onSubmitRetrieveWeatherInfo(query, errorMessage);
         }}
       >
         <Input
           className="flex-1"
           name="query"
           required={false}
-          label="Country"
+          label="Search"
           error={errorMessage}
           value={query}
           onChange={validateAndSetInput}

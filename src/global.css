@@ -12,11 +12,12 @@
 @tailwind components;
 @layer components {
   .input-default {
-    @apply h-[calc(var(--input-height)-2px)] w-full px-3 pb-[0.2rem] pt-[0.9rem] font-[500] leading-[2.15] text-black outline-none;
-    @apply placeholder:font-normal placeholder:text-slate-300 disabled:bg-slate-300 disabled:text-slate-800;
-    @apply placeholder:opacity-100 data-[input-use-external-label=true]:py-[0.34rem] data-[input-use-r-adornment]:pr-[3.5rem];
-    @apply data-[input-hide-placeholder=true]:placeholder:opacity-0 text-black bg-transparent;
-    /* @apply dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary; */
+    @apply h-[calc(var(--input-height)-2px)] w-full px-3 pb-[0.2rem] pt-[0.9rem] font-[500] leading-[2.15] outline-none bg-transparent;
+    @apply font-normal text-black disabled:text-slate-800 dark:disabled:text-white/50;
+    @apply placeholder:font-normal placeholder:text-slate-300 placeholder:opacity-100;
+    @apply data-[input-use-external-label=true]:py-[0.34rem] data-[input-use-r-adornment]:pr-[3.5rem];
+    @apply data-[input-hide-placeholder=true]:placeholder:opacity-0;
+    @apply dark:text-white dark:placeholder:text-white;
   }
 }
 

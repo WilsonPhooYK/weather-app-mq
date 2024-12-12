@@ -1,34 +1,65 @@
-import { ReactNode, createContext, useMemo, useState } from "react";
+import LoadingScreen, { LoadingScreenHandle } from "@/components/LoadingScreen";
+import { cn } from "@/lib/utils";
+import { ReactNode, createContext, useMemo, useRef, useState } from "react";
+
+const WEATHER_APP_THEME_LOCALSTORAGE = "weather_app_theme";
 
 type AppContext = {
-  mode: 'light' | 'dark';
-  setMode: React.Dispatch<React.SetStateAction<AppContext['mode']>>,
+  theme: "light" | "dark";
+  setTheme: React.Dispatch<React.SetStateAction<AppContext["theme"]>>;
+  toggleLoadingScreen: LoadingScreenHandle['setIsLoading'],
 };
 
 export const AppContext = createContext<AppContext>({
-  mode: 'light',
-  setMode: () => {},
+  theme: "light",
+  setTheme: () => {},
+  toggleLoadingScreen: () => {},
 });
 
 export default function AppContextProvider({
-  mode: inputMode,
   children,
-}: Pick<AppContext, 'mode'> & {
+}: {
   children: ReactNode;
 }) {
+  const loadingScreenRef = useRef<LoadingScreenHandle>(null);
   // Controls light or dark mode
-  const [mode, setMode] = useState<AppContext['mode']>(inputMode);
+  const [appTheme, setAppTheme] = useState<AppContext["theme"]>(() => {
+    const localStorageTheme = localStorage?.getItem(WEATHER_APP_THEME_LOCALSTORAGE);
+    if (localStorageTheme === 'light' || localStorageTheme === 'dark') {
+      return localStorageTheme;
+    }
 
-  const value = useMemo<AppContext>(() => ({
-    mode,
-    setMode,
-  }), [mode]);
+    const systemTheme = typeof window !== "undefined" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+
+    return systemTheme;
+  });
+
+  const value = useMemo<AppContext>(
+    () => ({
+      theme: appTheme,
+      setTheme: (value) => {
+        setAppTheme(value);
+        localStorage.setItem(WEATHER_APP_THEME_LOCALSTORAGE, value as string);
+      },
+      toggleLoadingScreen: (isLoading) => loadingScreenRef.current?.setIsLoading(isLoading),
+    }),
+    [appTheme, setAppTheme]
+  );
 
   return (
-    <AppContext.Provider
-      value={value}
-    >
-      {children}
+    <AppContext.Provider value={value}>
+      <main
+        className={cn(
+          appTheme,
+          "max-w-[100vw] overflow-x-hidden min-h-[100vh] flex flex-col"
+        )}
+      >
+        {children}
+      </main>
+      <LoadingScreen ref={loadingScreenRef} />
     </AppContext.Provider>
   );
 }

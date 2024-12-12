@@ -2,21 +2,29 @@ import WeatherContextProvider from "@/context/WeatherContext";
 import WeatherSearch from "./(components)/WeatherSearch/WeatherSearch";
 import WeatherInfoCurrent from "./(components)/WeatherInfoCurrent";
 import WeatherSearchHistory from "./(components)/WeatherSearchHistory";
+import { cn } from "@/lib/utils";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
 
 export default function Weather() {
   return (
     <WeatherContextProvider>
-      {/* Still need to have a h1 tag for SEO, hidden for screen reader */}
-      <h1 className="sr-only">Weather App</h1>
-      <main className={`bg-light-clouds min-h-[100svh] bg-center`}>
+      <div className="bg-light-clouds dark:bg-dark-clouds flex-1 bg-center bg-cover">
+        {/* Still need to have a h1 tag for SEO, hidden for screen reader */}
+        <h1 className="sr-only">Weather App</h1>
         <div className="max-w-screen-md mx-auto px-3 py-10">
+          <div className="flex justify-end mb-3">
+            <ThemeSwitcher />
+          </div>
           <WeatherSearch />
-          <div className="rounded-[2.5rem] bg-white/20 ring-1 ring-white/50 mt-32 sm:mt-20 py-5 sm:py-10 px-3 sm:px-8 space-y-10">
+          <div className={cn(
+            'rounded-[2.5rem] bg-white/20 dark:bg-black-secondary/30 ring-1 ring-white/50 dark:ring-transparent',
+            'mt-32 sm:mt-24 py-5 sm:py-10 px-3 sm:px-8 space-y-10',
+          )}>
             <WeatherInfoCurrent />
             <WeatherSearchHistory />
           </div>
         </div>
-      </main>
+      </div>
     </WeatherContextProvider>
   );
 }

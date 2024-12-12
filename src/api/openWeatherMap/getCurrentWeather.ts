@@ -19,11 +19,14 @@ type CurrentWeatherApiData = {
   };
   // Time of data calculation, unix, UTC
   dt?: number;
+  timezone?: number;
 };
 
 // Weather is in an array, we will flatten it and always take the 1st one
 export type CurrentWeatherData = Omit<CurrentWeatherApiData, "weather"> & {
   weather?: NonNullable<CurrentWeatherApiData["weather"]>[number];
+  // Added local_dt to track the actual local time to fetch this data
+  local_dt?: number;
 };
 
 export async function getCurrentWeather(
@@ -54,8 +57,9 @@ export async function getCurrentWeather(
         temp_max: response.main?.temp_max,
         humidity: response.main?.humidity,
       },
-      // Problem with Api is, it is cached if called quickly, so we use our time to simulate results,
-      dt: Math.floor(Date.now() * 0.001),
+      dt: response.dt,
+      timezone: response.timezone,
+      local_dt: Math.floor(Date.now() * 0.001),
     };
 
     return [undefined, prunedWeatherData] as Response<

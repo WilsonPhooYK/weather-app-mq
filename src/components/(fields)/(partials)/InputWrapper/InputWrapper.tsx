@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { ReactNode, RefObject, memo } from 'react';
 
 type InputWrapper = {
@@ -21,14 +21,19 @@ export default memo(function InputWrapper({
   return (
     <div
       ref={refObj}
-      className={clsx(
-        disabled ? 'bg-slate-300' : 'bg-white/50',
-        'peer relative order-2 min-h-[var(--input-height)] w-full overflow-hidden rounded-2xl border border-slate-300',
-        'outline-slate-300 disabled:[&_input]:!text-black',
+      className={cn(
+        'peer relative order-2 min-h-[var(--input-height)] w-full overflow-hidden rounded-2xl border',
         'focus-within:outline focus-within:outline-1 focus-within:outline-offset-2',
-        'data-[input-state-error=true]:border-red-500 data-[input-state-error=true]:outline-red-500',
+        'data-[input-state-error=true]:border-red-800 data-[input-state-error=true]:outline-red-800',
+        'dark:data-[input-state-error=true]:border-red-400 dark:data-[input-state-error=true]:outline-red-400',
         'motion-reduce:transition-none',
         'flex items-center',
+        'bg-white/50 dark:bg-black-secondary/50 border-transparent',
+        'outline-slate-300 dark:outline-black-secondary/50',
+        '', {
+          'bg-slate-400 text-white': disabled,
+          'dark:bg-black-secondary/50  dark:outline-black-secondary/50': disabled,
+        },
         className
       )}
       data-input-state-active={isStateActive}

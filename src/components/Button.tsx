@@ -21,7 +21,7 @@ export default memo(function Button({
         'min-h-9 px-4 py-2',
         '[&.btn-circle]:rounded-full [&.btn-circle]:min-h-0 [&.btn-circle]:p-2.5',
         className, {
-          'bg-purple-900 text-white hover:bg-purple-900/90': variant === 'primary',
+          'bg-primary text-white hover:bg-primary/90 dark:bg-primary-dark dark:hover:bg-primary-dark/90': variant === 'primary',
         }
       )}
     />

@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: ["class"],
+  darkMode: 'selector',
   content: [
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
@@ -14,6 +14,12 @@ export default {
       backgroundImage: {
         'light-clouds': `url('/src/assets/bg-light-clouds.webp')`,
         'dark-clouds': `url('/src/assets/bg-dark-clouds.webp')`,
+      },
+      colors: {
+        primary: '#6C40B5',
+        'primary-dark': '#28124D',
+        'black-secondary': '#1A1A1A',
+        'light-grey': '#666666',
       }
     },
   },
