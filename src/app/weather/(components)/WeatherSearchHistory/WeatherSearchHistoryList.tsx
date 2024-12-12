@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import getFormattedLocaleDateTime from "@/lib/date";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import imgSearch from "@/assets/search.webp";
 import imgDelete from "@/assets/delete.webp";
 import { cn } from "@/lib/utils";
@@ -41,9 +41,27 @@ export default memo(function WeatherSearchHistoryList({
     [setHistorySearchWeatherData]
   );
 
+  // Buttons to search and delete from history list item
+  const buttons = useMemo(() => [{
+    type: 'search' as const,
+    onClick: (history: WeatherSearchHistoryItem) => {
+      onSearchHistoryItem(history);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    img: imgSearch,
+    imgAlt: 'Search',
+  }, {
+    type: 'delete' as const,
+    onClick: (index: number) => {
+      deleteItemFromWeatherHistory(index);
+    },
+    img: imgDelete,
+    imgAlt: 'Delete',
+  }], [deleteItemFromWeatherHistory, onSearchHistoryItem]);
+
   return (
     <ul className="space-y-3">
-      {weatherHistory.map((history, i) => (
+      {weatherHistory.map((history, index) => (
         <li
           key={`${history.name}-${history.country}-${history.local_dt}`}
           className="min-[370px]:flex justify-between items-center gap-3 bg-white/40 dark:bg-black-secondary/50 rounded-2xl px-5 py-3"
@@ -67,39 +85,33 @@ export default memo(function WeatherSearchHistoryList({
             )}
           </div>
           <div className="max-[369px]:mt-2 max-sm:justify-end flex items-center gap-x-3">
-            <Button
-              type="button"
-              className={cn(
-                "relative btn-circle shrink-0",
-                "dark:bg-transparent ring-white/50 dark:ring-1 dark:hover:bg-white/50"
-              )}
-              onClick={() => {
-                onSearchHistoryItem(history);
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-            >
-              <img
-                src={imgSearch}
-                alt="Search"
-                referrerPolicy="no-referrer"
-                className="w-4 h-4 object-contain opacity-50 dark:invert"
-              />
-            </Button>
-            <Button
-              type="button"
-              className={cn(
-                "relative btn-circle shrink-0",
-                "dark:bg-transparent ring-white/50 dark:ring-1 dark:hover:bg-white/50"
-              )}
-              onClick={() => deleteItemFromWeatherHistory(i)}
-            >
-              <img
-                src={imgDelete}
-                alt="Delete"
-                referrerPolicy="no-referrer"
-                className="w-4 h-4 object-contain opacity-50 dark:invert"
-              />
-            </Button>
+            {
+              buttons.map((button) => (
+                <Button
+                  key={button.type}
+                  type="button"
+                  className={cn(
+                    "relative btn-circle",
+                    "dark:bg-transparent ring-white/50 dark:ring-1 dark:hover:bg-white/50",
+                    'w-9 h-9',
+                  )}
+                  onClick={() => {
+                    if (button.type === 'search') {
+                      button.onClick(history); // Ensure `history` is passed for 'search' type
+                    } else if (button.type === 'delete') {
+                      button.onClick(index); // Ensure `index` is passed for 'delete' type
+                    }
+                  }}
+                >
+                  <img
+                    src={button.img}
+                    alt={button.imgAlt}
+                    referrerPolicy="no-referrer"
+                    className="w-4 h-4 object-contain opacity-50 dark:invert"
+                  />
+                </Button>
+              ))
+            }
           </div>
         </li>
       ))}
