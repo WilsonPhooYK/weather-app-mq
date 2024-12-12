@@ -27,7 +27,7 @@ The input field accepts a city name or a city name with its corresponding countr
 Here are some important notes for this project:
 
 - All images used (except for SVGs) are converted to WebP format to reduce file size significantly.
-- The OpenWeather API responses can sometimes be inaccurate without providing the country code. This is because the Geocoding API is [deprecated](https://openweathermap.org/current#builtin) and now requires using two APIs:
+- The OpenWeather API responses can sometimes be inaccurate without providing the country code. This is because the direct Geocoded CurrentWeather API is [deprecated](https://openweathermap.org/current#builtin) and now requires using two APIs:
   - The [GeoCoding API](https://openweathermap.org/api/geocoding-api) to retrieve longitude and latitude based on the city name and country code.
   - The [CurrentWeather API](https://openweathermap.org/current) to get weather data based on longitude and latitude.
 - Including the API key (OpenWeather) in the frontend is not recommended. I initially attempted to use AWS Lambda functions to encapsulate the key, but eventually decided against it due to cold start issues with serverless functions and it is actually out of scope. The key is on the free tier, so the risk is minimal. [See screenshot](./docs/lambda.png).
@@ -78,6 +78,8 @@ Given that the app is relatively simple, I avoided using many external libraries
   - Consider using a UI component library like [shadcn UI](https://ui.shadcn.com/) or [daisyUI](https://daisyui.com/) for pre-built components like modals, form fields, and buttons.
 - **State Management:**
   - While React's Context API works for global state management, using a state management library like [Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction) would reduce unnecessary re-renders and provide a more efficient way to manage global data.
+- **Zod for Type Validation:**
+  - [Zod](https://zod.dev/?id=installation) offers TypeScript-first schema validation with static type inference, making it a powerful tool for validating form or API data. In scenarios like microservices architecture, where the frontend cannot always guarantee the structure of API responses, runtime validation becomes invaluable for maintaining data integrity. While Zod's runtime validation is robust, one trade-off to consider is its relatively high bundle size, which might impact performance in size-sensitive applications.
 
 
 ## Folder structure
@@ -136,5 +138,5 @@ CI/CD is not setup yet. Here is a manual way to deploy.
 
 1. Build with `yarn build`.
 2. Pull this repo: [weather-app-test](https://github.com/WilsonPhooYK/weather-app-test). This repo has GitHub pages activated for this project.
-3. Copy the contents of the build folder `dist` into the repo and commit to `main` branch. GitHub pages should deploy automatically in a moment.
+3. Replace the contents of the build folder `dist` into the repo and commit to `main` branch. GitHub pages should deploy automatically in a moment.
 4. View the live Weather App [here](https://wilsonphooyk.github.io/weather-app-test/).
