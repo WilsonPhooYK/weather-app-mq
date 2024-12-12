@@ -2,7 +2,7 @@
 
 This is a single-page ReactJS + Vite application that uses the [OpenWeather API](https://openweathermap.org/api) to retrieve current weather data for cities around the world. The app takes in city names and country codes to provide weather information, and it is built primarily with ReactJS and TailwindCSS.
 
-The website is deployed here temporarily: (Weather App Test)[https://wilsonphooyk.github.io/weather-app-test/]
+The website is deployed here temporarily: [Weather App Test](https://wilsonphooyk.github.io/weather-app-test/)
 
 ## Running the Application
 
@@ -135,6 +135,6 @@ project
 CI/CD is not setup yet. Here is a manual way to deploy.
 
 1. Build with `yarn build`.
-2. Pull this repo: (weather-app-test)[https://github.com/WilsonPhooYK/weather-app-test]. This repo has GitHub pages activated for this project.
+2. Pull this repo: [weather-app-test](https://github.com/WilsonPhooYK/weather-app-test). This repo has GitHub pages activated for this project.
 3. Copy the contents of the build folder `dist` into the repo and commit to `main` branch. GitHub pages should deploy automatically in a moment.
-4. View the live Weather App (here)[https://wilsonphooyk.github.io/weather-app-test/]
+4. View the live Weather App [here](https://wilsonphooyk.github.io/weather-app-test/).
