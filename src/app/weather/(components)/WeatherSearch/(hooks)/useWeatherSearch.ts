@@ -1,8 +1,8 @@
 import { getCurrentWeather } from "@/api/openWeatherMap/getCurrentWeather";
 import { getGeoCoding } from "@/api/openWeatherMap/getGeoCoding";
 import { OpenWeatherData } from "@/api/openWeatherMap/types";
-import { AppContext } from "@/context/AppContext";
-import { WeatherContext } from "@/context/WeatherContext";
+import { AppContext } from "@/contexts/AppContext";
+import { WeatherContext } from "@/contexts/WeatherContext";
 import { GENERIC_ERROR_DESC, isApiErrorData } from "@/lib/fetchApi";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 

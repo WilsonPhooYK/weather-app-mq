@@ -2,7 +2,7 @@ import './global.css';
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import Weather from './app/weather/page';
-import AppContextProvider from './context/AppContext';
+import AppContextProvider from './contexts/AppContext';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

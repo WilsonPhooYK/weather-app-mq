@@ -1,6 +1,6 @@
 import { memo, useContext } from "react";
 import Switch from "./(fields)/Switch";
-import { AppContext } from "@/context/AppContext";
+import { AppContext } from "@/contexts/AppContext";
 
 export default memo(function ThemeSwitcher() {
   const { theme, setTheme } = useContext(AppContext);

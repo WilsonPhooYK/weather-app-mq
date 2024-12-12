@@ -1,4 +1,4 @@
-import { WeatherContext } from "@/context/WeatherContext";
+import { WeatherContext } from "@/contexts/WeatherContext";
 import getFormattedLocaleDateTime from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { memo, useContext } from "react";

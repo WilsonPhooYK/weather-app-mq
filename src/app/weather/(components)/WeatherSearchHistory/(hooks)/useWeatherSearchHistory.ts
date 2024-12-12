@@ -1,4 +1,4 @@
-import { WeatherContext } from "@/context/WeatherContext";
+import { WeatherContext } from "@/contexts/WeatherContext";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { WeatherSearchHistoryItem } from "../WeatherSearchHistoryList";
 import { getWeatherHistoryFromLocalStorage, MAX_HISTORY_LENGTH, setWeatherHistoryToLocalStorage } from "@/lib/weatherHistoryLocalStorage";

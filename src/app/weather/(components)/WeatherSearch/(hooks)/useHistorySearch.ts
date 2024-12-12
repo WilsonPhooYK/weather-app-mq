@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { UseWeatherInput } from "./useWeatherInput";
 import { UseWeatherSearch } from "./useWeatherSearch";
-import { WeatherContext } from "@/context/WeatherContext";
+import { WeatherContext } from "@/contexts/WeatherContext";
 
 /**
  * This hook will consume a history search triggered by the user

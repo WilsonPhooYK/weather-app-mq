@@ -1,4 +1,4 @@
-import WeatherContextProvider from "@/context/WeatherContext";
+import WeatherContextProvider from "@/contexts/WeatherContext";
 import WeatherSearch from "./(components)/WeatherSearch/WeatherSearch";
 import WeatherInfoCurrent from "./(components)/WeatherInfoCurrent";
 import WeatherSearchHistory from "./(components)/WeatherSearchHistory";

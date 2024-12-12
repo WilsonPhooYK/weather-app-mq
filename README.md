@@ -1,54 +1,117 @@
-# React + TypeScript + Vite
+# Weather App for MQ
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a single-page ReactJS + Vite application that uses the [OpenWeather API](https://openweathermap.org/api) to retrieve current weather data for cities around the world. The app takes in city names and country codes to provide weather information, and it is built primarily with ReactJS and TailwindCSS.
 
-Currently, two official plugins are available:
+## Usage
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The input field accepts a city name or a city name with its corresponding country code (e.g., "city" or "city,country_code") to retrieve weather data. While using just the city name can provide results, adding the country code will yield more accurate results.
 
-## Expanding the ESLint configuration
+## Key Points / Notes
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Here are some important notes for this project:
 
-- Configure the top-level `parserOptions` property like this:
+- All images used (except for SVGs) are converted to WebP format to reduce file size significantly.
+- The OpenWeather API responses can sometimes be inaccurate without providing the country code. This is because the Geocoding API is [deprecated](https://openweathermap.org/current#builtin) and now requires using two APIs:
+  - The [GeoCoding API](https://openweathermap.org/api/geocoding-api) to retrieve longitude and latitude based on the city name and country code.
+  - The [CurrentWeather API](https://openweathermap.org/current) to get weather data based on longitude and latitude.
+- Including the API key (OpenWeather) in the frontend is not recommended. I initially attempted to use AWS Lambda functions to encapsulate the key, but eventually decided against it due to cold start issues with serverless functions. The key is on the free tier, so the risk is minimal. [See screenshot](./docs/lambda.png).
+- Some assets and information provided in the project brief were incomplete, so I made adjustments to create a more complete solution. For example, the weather icons were not complete, so I used icons from [Weather Icons](https://openweathermap.org/weather-conditions) instead.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Requirements Checklist
+
+- **Display information at least based on mock up UI** ✅
+  - All functionalities are built according to the Figma mock-up. The displayed datetime is the local time of the location.
+  - An additional component is created to display a message when no weather data is loaded initially.
+
+- **User can input city and country name to get weather information and display them on UI** ✅
+  - This functionality is implemented in a single input field, which is guarded by a regex pattern that matches either `(city)` or `(city,country_code)`.
+  - Requests are made using basic fetch API.
+
+- **User can find their records in search history, and can click search button to call api again** ✅
+  - The search history is saved in localStorage and persists across sessions. Users can also delete individual search records.
+
+- **If user inputs invalid city or country name, show appropriate message on UI** ✅
+  - The regex matcher ensures valid inputs, and any errors including API errors are displayed below the input field.
+
+- **You may choose to build either dark or light mock up based on your own preference** ✅
+  - Both light and dark themes have been implemented, with a theme switcher allowing users to toggle between them.
+
+- **Optional: You may build both theme with a theme switcher** ✅
+  - The theme preference is stored in `localStorage`, falling back to the device's preference on the first visit.
+
+## Potential Improvements
+
+Given that the app is relatively simple, I avoided using many external libraries to minimize overhead. However, here are some suggestions for potential improvements if the project were to scale:
+
+- **Move to [NextJS](https://nextjs.org/):**
+  - Server-Side Rendering (SSR) would be beneficial for SEO, and with server components and server actions, securing API keys wouldn't be an issue. It would also allow the frontend engineer to handle more encapsulation tasks without relying on the backend.
+- **API Calls:**
+  - The current API calls are made using basic fetch. For more complex needs, I would recommend using [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview) for type safety, caching, and fetching optimizations.
+- **UI Library:**
+  - Consider using a UI component library like [shadcn UI](https://ui.shadcn.com/) or [daisyUI](https://daisyui.com/) for pre-built components like modals, form fields, and buttons.
+- **State Management:**
+  - While React's Context API works for global state management, using a state management library like [Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction). would reduce unnecessary re-renders and provide a more efficient way to manage global data.
+
+
+## Folder structure
+
+The folder structure is inspired by the NextJS workflow and follows a dependency-based location for file organization. Files that are used together should be placed in the same directory, except when they are reusable components or libraries. In that case, they will be separated into their own folders.
+
+For example:
+
+- Components and hooks specific to weather-related functionality are grouped in the `weather` directory, since there are only used once in the page.
+- Reusable components and hooks are placed in separate `components` or `hooks` directories.
+
 ```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+project
+|
+└───src
+    │   global.css
+    │   main.tsx
+    │
+    └───api (contains all the APIs)
+    |   │   
+    |   └───openWeatherMap
+    |       |   
+    |       |   getCurrentWeather
+    |       |   getGeoCoding
+    |       |   ...
+    |       
+    └───app (All the pages for the app)
+    |   │   
+    |   └───weather
+    |       |   
+    |       |   page.tsx
+    |       └───(components)
+    |           |   ...
+    |           |   ...
+    |           └───WeatherSearchHistory
+    |               |
+    |               |   index.ts
+    |               |   WeatherSearchHistory
+    |               |   WeatherSearchHistoryList
+    |               └───(hooks)
+    |                   |
+    |                   └───useWeatherSearchHistory
+    |
+    └───assets (All images)
+    |
+    └───components (Reusable components)
+    |
+    └───contexts (Contexts)
+    |
+    └───lib (Collection of reusable functions)
 ```
+## Running the Application
 
-Used typescript + tailwind
+### System Requirements: Node.js 18.17 or later.
 
-Images converted to webp format.
+### Steps to run:
+1. Install dependencies:
+```bash
+yarn
+```
+1. Start the development server:
+```bash
+yarn dev
+```
