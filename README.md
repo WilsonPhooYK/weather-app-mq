@@ -77,7 +77,7 @@ Given that the app is relatively simple, I avoided using many external libraries
 - **UI Library:**
   - Consider using a UI component library like [shadcn UI](https://ui.shadcn.com/) or [daisyUI](https://daisyui.com/) for pre-built components like modals, form fields, and buttons.
 - **State Management:**
-  - While React's Context API works for global state management, using a state management library like [Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction). would reduce unnecessary re-renders and provide a more efficient way to manage global data.
+  - While React's Context API works for global state management, using a state management library like [Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction) would reduce unnecessary re-renders and provide a more efficient way to manage global data.
 
 
 ## Folder structure
