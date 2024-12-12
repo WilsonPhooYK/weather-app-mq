@@ -45,6 +45,7 @@ export function isApiErrorData(error: unknown): error is ApiErrorData<unknown> {
 ///////////////////////////////////////
 // Fetch Api
 ///////////////////////////////////////
+// Response is either error or result
 export type Response<Result, ErrorResponse> = [ApiErrorData<ErrorResponse>, undefined] | [undefined, Result];
 
 

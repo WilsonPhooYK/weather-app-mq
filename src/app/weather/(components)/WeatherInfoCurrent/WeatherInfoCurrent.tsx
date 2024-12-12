@@ -2,7 +2,7 @@ import { WeatherContext } from "@/contexts/WeatherContext";
 import getFormattedLocaleDateTime from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { memo, useContext } from "react";
-import WeatherInfoCurrentEmpty from "./WeatherInfoCurrentEmpty";
+import WeatherInfoCurrentEmpty from "../WeatherInfoCurrentEmpty";
 
 /**
  * Displays the current weather data if available, otherwise shows an empty state.
