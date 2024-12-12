@@ -68,18 +68,18 @@ export default memo(function WeatherSearchHistoryList({
         >
           <div className="sm:flex justify-between items-center w-full gap-2">
             {(history.name || history.country) && (
-              <p className="max-sm:inline max-sm:text-sm dark:text-white">
+              <p className="max-sm:text-sm dark:text-white flex-1">
                 {/* Remove empty strings and joing together */}
-                {[history.name, history.country].filter((p) => p).join(",")}
-              </p>
-            )}
-            {history.temp && (
-              <p className="max-sm:inline max-sm:ml-1 text-primary max-sm:text-sm dark:text-white font-bold flex-1">
-                {Math.round(history.temp)}°C
+                <span>{[history.name, history.country].filter((p) => p).join(",")}</span>
+                {history.temp && (
+                  <span className="ml-1 text-primary max-sm:text-sm dark:text-white font-bold">
+                    {Math.round(history.temp)}°C
+                  </span>
+                )}
               </p>
             )}
             {history.dt && (
-              <p className="text-xs sm:text-sm dark:text-white/50">
+              <p className="text-xs sm:text-sm dark:text-white/50 sm:text-right flex-1">
                 {getFormattedLocaleDateTime(history.dt, history.timezone)}
               </p>
             )}
